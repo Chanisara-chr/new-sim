@@ -1,48 +1,39 @@
 *** Settings ***
+Library    Collections
+Library    CSVLibrary
+Library    OperatingSystem
 Library    SeleniumLibrary
+Library    String
 
 *** Variables ***
 ${URL}    sim-dev.toyota-asia.com
 ${BROWSER}    edge
 ${REMOTE_URL}
-# @{ITEM_NAME_LOCATOR}    item-information-item-name-dropdown-2    item-information-item-name-dropdown-3    item-information-item-name-dropdown-4    item-information-item-name-dropdown-5    item-information-item-name-dropdown-6    item-information-item-name-dropdown-7    item-information-item-name-dropdown-8    item-information-item-name-dropdown-9    item-information-item-name-dropdown-10
-# @{ITEM_NAME}    DI-IS Maintenance    DI-IS Maintenance    DI-IS Maintenance    DI-IS Maintenance    DI-IS Maintenance    DI-IS Maintenance    DI-IS Maintenance    DI-IS Maintenance    DI-IS Maintenance
-# @{ITEM_DESCRIPTION_LOCATOR}    item-information-item-description-input-2    item-information-item-description-input-3    item-information-item-description-input-4    item-information-item-description-input-5    item-information-item-description-input-6    item-information-item-description-input-7    item-information-item-description-input-8    item-information-item-description-input-9    item-information-item-description-input-10
-# @{ITEM_DESCRIPTION}    Maintenance - Main IT Equipment    Maintenance - Software for Main Server    Maintenance - TTNI for TAW Network Monitoring    Maintenance - TAW Leased Line    Maintenance - Common TGN Service    Server Administration + Shared Service    AP SOC Monitoring    RHQ and Thai Company Security Improvement    Plant Security
-# @{ITEM_QTY_LOCATOR}
-# @{ITEM_QTY}
-# @{ITEM_PRICE_THB_LOCATOR}
-# @{ITEM_PRICE_THB}
-# @{ITEM_AMOUNT_THB_LOCATOR}
-# @{ITEM_AMOUNT_THB}
-# @{ITEM_PRICE_LOCATOR}    
-# @{ITEM_PRICE}
-# @{ITEM_AMOUNT_LOCATOR}    
-# @{ITEM_AMOUNT}     
+    
 ...    
 *** Test Cases ***
 Entry Invoice the first invoice, 10 items
     Entry Website
     Select menu Invoice Entry Screen
 # Section Company Information
-    # Verifies Company Name is    TOYOTA MOTOR ASIA (THAILAND) CO., LTD.
-    # Verifies Company's Tax ID is    115546006888
-    # Verifies T/D is    Toyota
-    # Verifies User Name is    MISS Natnicha Rerngrit
-    # Verify Department is    Asia DX & IT Management
-    # Verifies total company's branches count is    1
-    # Search Company's Branch    Head office
-    # Verifies Company's branch is    00000 - Head office
-    # Verifies Company's address is    99 Moo 5, Ban Rakat, Bang Bo, Samut Prakan 10560 Thailand
+    Verifies Company Name is    TOYOTA MOTOR ASIA (THAILAND) CO., LTD.
+    Verifies Company's Tax ID is    115546006888
+    Verifies T/D is    Toyota
+    Verifies User Name is    MISS Natnicha Rerngrit
+    Verify Department is    Asia DX & IT Management
+    Verifies total company's branches count is    1
+    Search Company's Branch    Head office
+    Verifies Company's branch is    00000 - Head office
+    Verifies Company's address is    99 Moo 5, Ban Rakat, Bang Bo, Samut Prakan 10560 Thailand
 # # Section Customer's Information
-    # Verifies total Customer Name count is    1
-    # Select Customer Name    TOYOTA AUTO WORKS CO.,LTD.
-    # Verifies total customer's branches count is
-    # Search Customer's Branch
-    # Verifies Customer's branch is
-    # Verifies Customer's Tax ID is
-    # Verifies Customer's address is
-    # Veriies Remittance Due Date is
+    Verifies total Customer Name count is    1
+    Select Customer Name    TOYOTA AUTO WORKS CO.,LTD.
+    Verifies total customer's branches count is    1
+    Search Customer's Branch    Head Office
+    Verifies Customer's branch is    Head Office
+    Verifies Customer's Tax ID is    0115531001656
+    Verifies Customer's address is    187 M.9 OLD RAILWAY RD., T.THEPHARAK, A.MUEANG, SAMUTPRAKAN Thailand 10270
+    Veriies Remittance Due Date is    20th/Next MTH
     # Select Attn
     # Verifies Attn name is
     # Verifies Attn's e-mail is
@@ -108,77 +99,90 @@ Select menu Invoice Entry Screen
 
 # Section Company Information
 
-# Verifies Company Name is
-#     [Arguments]    ${company_name}
-#     Wait Until Keyword Succeeds    5x    200ms    
-#     ...    Element Attribute Value Should Be    id=company-information-company-name-input    value    expected=${company_name}
+Verifies Company Name is
+    [Arguments]    ${company_name}
+    Wait Until Keyword Succeeds    5x    200ms    
+    ...    Element Attribute Value Should Be    id=company-information-company-name-input    value    expected=${company_name}
 
-# Verifies Company's Tax ID is
-#     [Arguments]    ${company_tax_id}
-#     Wait Until Keyword Succeeds    5x    200ms    
-#     ...    Element Attribute Value Should Be    id=company-information-tax-id-input    value    expected=${company_tax_id}
+Verifies Company's Tax ID is
+    [Arguments]    ${company_tax_id}
+    Wait Until Keyword Succeeds    5x    200ms    
+    ...    Element Attribute Value Should Be    id=company-information-tax-id-input    value    expected=${company_tax_id}
 
-# Verifies T/D is
-#     [Arguments]    ${company_td}
-#     Radio Button Should Be Set To    company-information-td-option    value=${company_td}
+Verifies T/D is
+    [Arguments]    ${company_td}
+    Radio Button Should Be Set To    company-information-td-option    value=${company_td}
 
-# Verifies User Name is
-#     [Arguments]    ${user_name}
-#     Wait Until Keyword Succeeds    5x    200ms    
-#     ...    Element Attribute Value Should Be    id=company-information-user-name-input    value    expected=${user_name}
+Verifies User Name is
+    [Arguments]    ${user_name}
+    Wait Until Keyword Succeeds    5x    200ms    
+    ...    Element Attribute Value Should Be    id=company-information-user-name-input    value    expected=${user_name}
 
-# Verify Department is
-#     [Arguments]    ${user_department}
-#     Wait Until Keyword Succeeds    5x    200ms    
-#     ...    Element Attribute Value Should Be    id=company-information-department-input    value    expected=${user_department}
+Verify Department is
+    [Arguments]    ${user_department}
+    Wait Until Keyword Succeeds    5x    200ms    
+    ...    Element Attribute Value Should Be    id=company-information-department-input    value    expected=${user_department}
 
-# Verifies total company's branches count is
-#     [Arguments]    ${company_branchs_length}
-#     ${branch_length}    Get Selected List Labels    id=company-information-branch-dropdown
-#     Length Should Be    ${branch_length}    length=${company_branchs_length}
+Verifies total company's branches count is
+    [Arguments]    ${company_branchs_length}
+    ${branch_length}    Get Selected List Labels    id=company-information-branch-dropdown
+    Length Should Be    ${branch_length}    length=${company_branchs_length}
 
-# Search Company's Branch
-#     [Arguments]    ${branch_name}
-#     Input Text    id=company-information-branch-dropdown    ${branch_name}
-#     Press Keys    None    ARROW_DOWN
-#     Press Keys    None    RETURN
+Search Company's Branch
+    [Arguments]    ${branch_name}
+    Input Text    id=company-information-branch-dropdown    ${branch_name}
+    Press Keys    None    ARROW_DOWN
+    Press Keys    None    RETURN
 
-# Verifies Company's branch is
-#     [Arguments]    ${branch_name}
-#     Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=company-information-branch-dropdown    value     ${branch_name}
+Verifies Company's branch is
+    [Arguments]    ${branch_name}
+    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=company-information-branch-dropdown    value     ${branch_name}
 
-# Verifies Company's address is
-#     [Arguments]    ${branch_address}
-#     Wait Until Keyword Succeeds    5x    200ms    Element Attribute Value Should Be    id=company-information-address-id    value    ${branch_address}
+Verifies Company's address is
+    [Arguments]    ${branch_address}
+    Wait Until Keyword Succeeds    5x    200ms    
+    ...    Element Attribute Value Should Be    id=company-information-address-id    value    ${branch_address}
 
-# # Section Customer's Information
-# Verifies total Customer Name count is
-#     [Arguments]    ${customer_name_list_length}
-#     ${list_length}    Get Selected List Labels    id=company-information-branch-dropdown
-#     Length Should Be    ${list_length}    length=${customer_name_list_length}
+# Section Customer's Information
+Verifies total Customer Name count is
+    [Arguments]    ${customer_name_list_length}
+    ${customer_name_length}    Get Selected List Labels    id=company-information-branch-dropdown
+    Length Should Be    ${customer_name_length}    length=${customer_name_list_length}
 
-# Select Customer Name
-#     [Arguments]    ${branch_name}
-#     Wait Until Keyword Succeeds    5x    200ms    Select From List By Label    id=customer-information-customer-name-dropdown     ${branch_name}
+Select Customer Name
+    [Arguments]    ${branch_name}
+    Wait Until Keyword Succeeds    5x    200ms    Select From List By Label    id=customer-information-customer-name-dropdown     ${branch_name}
 
-# Verifies total customer's branches count is
+Verifies total customer's branches count is
+    [Arguments]    ${customer_branches_list_length}
+    ${customer_branches_length}    Get Selected List Labels    id=customer-information-customer-name-branch-dropdown
+    Length Should Be    ${customer_branches_length}    length=${customer_branches_list_length}    
 
+Search Customer's Branch
+    [Arguments]    ${customer_branch}
+    Input Text    id=customer-information-customer-name-branch-dropdown    ${customer_branch}
+    Press Keys    None    ARROW_DOWN
+    Press Keys    None    RETURN
 
-# Search Customer's Branch
+Verifies Customer's branch is
+    [Arguments]    ${branch_name}
+    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=customer-information-customer-name-branch-dropdown    value     ${branch_name}
+    
+Verifies Customer's Tax ID is
+    [Arguments]    ${customer_tax_id}
+    Wait Until Keyword Succeeds    5x    200ms    
+    ...    Element Attribute Value Should Be    id=customer-information-tax-id-input    value    expected=${customer_tax_id}
 
+Verifies Customer's address is
+    [Arguments]    ${branch_address}
+    Wait Until Keyword Succeeds    5x    200ms    
+    ...    Element Attribute Value Should Be    id=customer-information-address-input    value    ${branch_address}
 
-# Verifies Customer's branch is
-
-
-# Verifies Customer's Tax ID is
-
-
-# Verifies Customer's address is
-
-
-# Veriies Remittance Due Date is
-
-
+Veriies Remittance Due Date is
+    [Arguments]    ${remittance_due_date}
+    Wait Until Keyword Succeeds    5x    200ms    
+    ...    Element Attribute Value Should Be    id=document-information-remittance-due-date-input    value    ${remittance_due_date}
+    
 # Select Attn
 # Verifies Attn name is
 # Verifies Attn's e-mail is
