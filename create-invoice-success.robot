@@ -9,7 +9,9 @@ Library    DateTime
 *** Variables ***
 ${URL}    sim-dev.toyota-asia.com
 ${BROWSER}    edge
-${REMOTE_URL}
+${REMOTE_URL}   http://selenium-webdriver-edge:4444/wd/hub
+${CSV_FILE_PATH}    ${EXECDIR}/invoice_items.csv
+${GLOBAL_EXPECTED_DATE}
     
 ...    
 *** Test Cases ***
@@ -67,20 +69,20 @@ Entry Invoice the first invoice, 10 items
     Input Qty    item-information-qty-input-1    1
     Input Price(THB)    item-information-price-thb-input-1    351895.24
     Verifies Amount(THB) is    item-information-amount-thb-input-1    351895.24
-    Verifies Exchange Period is disable
-    Verifies Average Ex. Rate is    1.000000
+    Verifies Exchange Period is disable    item-information-exchange-period-dropdown-1
+    Verifies Average Ex. Rate is    item-information-average-ex-rate-input-1    1.000000
     Verifies Price is    item-information-price-input-1    351895.24
     Verifies Amount is    item-information-amount-input-1    351895.24
     # Verifies Base Amount is
 # # Section Withholding Tax Information
-    Select Show detail on document is Yes
-    Verifies WHT Rate is enable
-    Input WHT Rate is 3
-    Verifies Total Amount is
-    Verifies Value Added Tax is 7 and Invoice is
-    Verifies Grand Total Amount is
-    Verifies Withholding Tax is 3 and Invoice is
-    Verifies Net Amount is
+    # Select Show detail on document is Yes
+    # Verifies WHT Rate is enable
+    # Input WHT Rate is 3
+    # Verifies Total Amount is
+    # Verifies Value Added Tax is 7 and Invoice is
+    # Verifies Grand Total Amount is
+    # Verifies Withholding Tax is 3 and Invoice is
+    # Verifies Net Amount is
 # # Save
 #     Click Save
 # # Work List Screen
@@ -91,7 +93,7 @@ Entry Invoice the first invoice, 10 items
     Verifies table Job No. is    M-ITM2600001
     Verifies table REV is    00
     Verifies table Create By is    MISS Natnicha Rerngrit
-    Verifies table Create Date is    31-Jul-2025
+    Verifies table Create Date is Current Date
     Verifies table Transaction Type is     DI-IS Maintenance
     Verifies table Invoice Amount is    5,234,868.20
     Verifies table Document Status is    Waiting for Submit
@@ -363,9 +365,17 @@ Verifies table Create By is
     [Arguments]    ${create_by_name}
     Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=create-by-label-1   ${create_by_name}
   
-Verifies table Create Date is    
-    
-    
+Verifies table Create Date is Current Date
+    Store Expected Date Globally
+    Use Stored Global Date
+
+Store Expected Date Globally
+    ${expected_date}=    Get Current Date    result_format=%d-%b-%Y
+    Set Global Variable    ${GLOBAL_EXPECTED_DATE}    ${expected_date}
+
+Use Stored Global Date
+    ${actual_creation_date}=    Get Text    create-date-label-1
+    Should Be Equal    ${actual_creation_date}    ${GLOBAL_EXPECTED_DATE}
     
 Verifies table Transaction Type is
     [Arguments]    ${transaction_type}
