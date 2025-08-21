@@ -72,16 +72,29 @@ Entry Invoice the first invoice, 10 items
     Verifies Amount is    item-information-amount-input-1    351895.24
     # Verifies Base Amount is
 # # Section Withholding Tax Information
-#     Select Show detail on document is Yes
-#     Verifies WHT Rate is enable
-#     Input WHT Rate is 3
-#     Verifies Total Amount is
-#     Verifies Value Added Tax is 7 and Invoice is
-#     Verifies Grand Total Amount is
-#     Verifies Withholding Tax is 3 and Invoice is
-#     Verifies Net Amount is
+    Select Show detail on document is Yes
+    Verifies WHT Rate is enable
+    Input WHT Rate is 3
+    Verifies Total Amount is
+    Verifies Value Added Tax is 7 and Invoice is
+    Verifies Grand Total Amount is
+    Verifies Withholding Tax is 3 and Invoice is
+    Verifies Net Amount is
 # # Save
 #     Click Save
+# # Work List Screen
+    Entry Website
+    Select menu Work List Screen
+    Verifies PIC is    MISS Natnicha Rerngrit
+    Verifies Create By is    MISS Natnicha Rerngrit
+    Verifies Job No. is    M-ITM2600001
+    Verifies REV is    00
+    Verifies Create By is    MISS Natnicha Rerngrit
+    Verifies Create Date is    
+    Verifies Transaction Type is     DI-IS Maintenance
+    Verifies Invoice Amount is    5,234,868.20
+    Verifies Document Status is    Waiting for Submit
+
 
 *** Keywords ***
 
@@ -262,7 +275,7 @@ Verifies Amount is
 
 # Verifies Base Amount is
 
-# # Section Withholding Tax Information
+# Section Withholding Tax Information
 # Select Show detail on document is Yes
 # Verifies WHT Rate is enable
 # Input WHT Rate is 3
@@ -271,5 +284,34 @@ Verifies Amount is
 # Verifies Grand Total Amount is
 # Verifies Withholding Tax is 3 and Invoice is
 # Verifies Net Amount is
-# # Save
-# Click Save
+# Save
+Click Save
+# Work List Screen
+Select menu Work List Screen
+    Wait Until Element Is Visible    id=side-bar-transaction
+    Click Element    id=side-bar-transaction
+    Wait Until Element Is Visible    id=sub-side-bar-work-list-screen-btn    
+    Click Element    id=sub-side-bar-work-list-screen-btn
+    Wait Until Page Contains    PIC
+
+Verifies PIC is
+    [Arguments]    ${pic_name}
+    Wait Until Keyword Succeeds    5x    200ms    
+    ...    Element Text Should Be    id=pic-dropdown    value     ${pic_name}
+
+Verifies Create By is
+    [Arguments]    ${create_by_name}
+    Wait Until Keyword Succeeds    5x    200ms    
+    ...    Element Text Should Be    id=create-by-dropdown    value     ${create_by_name}
+    
+
+Verifies Job No. is    M-ITM2600001
+    
+Verifies REV is    00
+Verifies Create By is    MISS Natnicha Rerngrit
+Verifies Create Date is    
+Verifies Transaction Type is     DI-IS Maintenance
+Verifies Invoice Amount is    5,234,868.20
+Verifies Document Status is    Waiting for Submit
+
+
