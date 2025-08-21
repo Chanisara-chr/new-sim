@@ -63,7 +63,6 @@ Entry Invoice the first invoice, 10 items
 #     Select Currency is
 # # Section Item Information
     Select Item Type By Detail
-    Click Add Item
     Verifies Item Name is    DI-IS Maintenance
     Input item description    item-information-item-description-input-1    Outsource for PC Support and IT Operation Support +Network
     Input Qty    item-information-qty-input-1    1
@@ -73,6 +72,8 @@ Entry Invoice the first invoice, 10 items
     Verifies Average Ex. Rate is    item-information-average-ex-rate-input-1    1.000000
     Verifies Price is    item-information-price-input-1    351895.24
     Verifies Amount is    item-information-amount-input-1    351895.24
+    Click Add Item
+    Verify 9 Items
     # Verifies Base Amount is
 # # Section Withholding Tax Information
     # Select Show detail on document is Yes
