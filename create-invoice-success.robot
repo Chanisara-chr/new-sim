@@ -64,14 +64,14 @@ Entry Invoice the first invoice, 10 items
 # # Section Item Information
     Select Item Type By Detail
     Verifies Item Name is    DI-IS Maintenance
-    Input item description    item-information-item-description-input-1    Outsource for PC Support and IT Operation Support +Network
-    Input Qty    item-information-qty-input-1    1
-    Input Price(THB)    item-information-price-thb-input-1    351895.24
-    Verifies Amount(THB) is    item-information-amount-thb-input-1    351895.24
-    Verifies Exchange Period is disable    item-information-exchange-period-dropdown-1
-    Verifies Average Ex. Rate is    item-information-average-ex-rate-input-1    1.000000
-    Verifies Price is    item-information-price-input-1    351895.24
-    Verifies Amount is    item-information-amount-input-1    351895.24
+    Input item description    item-information-item-description-input-0    Outsource for PC Support and IT Operation Support +Network
+    Input Qty    item-information-qty-input-0    1
+    Input Price(THB)    item-information-price-thb-input-0    351895.24
+    Verifies Amount(THB) is    item-information-amount-thb-input-0    351895.24
+    Verifies Exchange Period is disable    item-information-exchange-period-dropdown-0
+    Verifies Average Ex. Rate is    item-information-average-ex-rate-input-0    1.000000
+    Verifies Price is    item-information-price-input-0    351895.24
+    Verifies Amount is    item-information-amount-input-0    351895.24
     Click Add Item
     Verify 9 Items
     # Verifies Base Amount is
@@ -241,7 +241,7 @@ Select Item Name
 
 Verifies Item Name is
     [Arguments]    ${1st_item_name}
-    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=item-information-item-name-dropdown-1    value     ${1st_item_name}
+    Wait Until Keyword Succeeds    5x    200ms    Element Attribute Value Should Be    id=item-information-item-name-dropdown-0    value     ${1st_item_name}
 
 Input item description
     [Arguments]    ${item_description_locator}    ${item_description}
@@ -257,7 +257,7 @@ Input Price(THB)
 
 Verifies Amount(THB) is
     [Arguments]    ${item_amount_thb_locator}    ${item_amount_thb}
-    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=${item_amount_thb_locator}    value    ${item_amount_thb}
+    Wait Until Keyword Succeeds    5x    200ms    Element Attribute Value Should Be    id=${item_amount_thb_locator}    value    ${item_amount_thb}
 
 Verifies Exchange Period is disable
     [Arguments]    ${exchange_period_locator}
@@ -269,11 +269,11 @@ Verifies Average Ex. Rate is
 
 Verifies Price is
     [Arguments]    ${item_price_locator}    ${item_price}
-    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=${item_price_locator}    value    ${item_price}
+    Wait Until Keyword Succeeds    5x    200ms    Element Attribute Value Should Be    id=${item_price_locator}    value    ${item_price}
 
 Verifies Amount is
     [Arguments]    ${item_amount_locator}     ${item_amount}    
-    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=${item_amount_locator}    value    ${item_amount}
+    Wait Until Keyword Succeeds    5x    200ms    Element Attribute Value Should Be    id=${item_amount_locator}    value    ${item_amount}
 
 Verify 9 Items
     @{csv_data}=    Read CSV File To List Of Dictionaries    ${CSV_FILE_PATH}
