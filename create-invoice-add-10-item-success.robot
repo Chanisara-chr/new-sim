@@ -150,7 +150,7 @@ Select menu Invoice Entry Screen
 
 # Section Item Information
 Select Item Type By Detail
-    Wait Until Keyword Succeeds    5x    200ms    Select Radio Button    group_name=item-information-select-item-type    value=item-information-by-summary-radio
+    Wait Until Keyword Succeeds    5x    200ms    Click Element    id=item-information-by-detail-radio
 
 Click Add Item
     Click Button    id=item-information-add-btn

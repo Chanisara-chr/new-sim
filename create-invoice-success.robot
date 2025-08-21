@@ -4,6 +4,7 @@ Library    CSVLibrary
 Library    OperatingSystem
 Library    SeleniumLibrary
 Library    String
+Library    DateTime
 
 *** Variables ***
 ${URL}    sim-dev.toyota-asia.com
@@ -87,13 +88,13 @@ Entry Invoice the first invoice, 10 items
     Select menu Work List Screen
     Verifies PIC is    MISS Natnicha Rerngrit
     Verifies Create By is    MISS Natnicha Rerngrit
-    Verifies Job No. is    M-ITM2600001
-    Verifies REV is    00
-    Verifies Create By is    MISS Natnicha Rerngrit
-    Verifies Create Date is    
-    Verifies Transaction Type is     DI-IS Maintenance
-    Verifies Invoice Amount is    5,234,868.20
-    Verifies Document Status is    Waiting for Submit
+    Verifies table Job No. is    M-ITM2600001
+    Verifies table REV is    00
+    Verifies table Create By is    MISS Natnicha Rerngrit
+    Verifies table Create Date is    31-Jul-2025
+    Verifies table Transaction Type is     DI-IS Maintenance
+    Verifies table Invoice Amount is    5,234,868.20
+    Verifies table Document Status is    Waiting for Submit
 
 
 *** Keywords ***
@@ -149,7 +150,7 @@ Search Company's Branch
 
 Verifies Company's branch is
     [Arguments]    ${branch_name}
-    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=company-information-branch-dropdown    value     ${branch_name}
+    Wait Until Keyword Succeeds    5x    200ms    Element Attribute Value Should Be    id=company-information-branch-dropdown    value     ${branch_name}
 
 Verifies Company's address is
     [Arguments]    ${branch_address}
@@ -179,7 +180,7 @@ Search Customer's Branch
 
 Verifies Customer's branch is
     [Arguments]    ${branch_name}
-    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=customer-information-customer-name-branch-dropdown    value     ${branch_name}
+    Wait Until Keyword Succeeds    5x    200ms    Element Attribute Value Should Be    id=customer-information-customer-name-branch-dropdown    value     ${branch_name}
     
 Verifies Customer's Tax ID is
     [Arguments]    ${customer_tax_id}
@@ -225,10 +226,7 @@ Veriies Remittance Due Date is
 
 # # Section Item Information
 Select Item Type By Detail
-    Select Radio Button    group_name=item-information-select-item-type    value=item-information-by-summary-radio
-
-Add And Verify Invoice Items
-    Click Add Item
+    Wait Until Keyword Succeeds    5x    200ms    Select Radio Button    group_name=item-information-select-item-type    value=item-information-by-summary-radio
 
 Click Add Item
     Click Button    id=item-information-add-btn
@@ -259,11 +257,12 @@ Verifies Amount(THB) is
     Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=${item_amount_thb_locator}    value    ${item_amount_thb}
 
 Verifies Exchange Period is disable
-    Element Should Be Disabled    id=item-information-exchange-period-dropdown-1
+    [Arguments]    ${exchange_period_locator}
+    Element Should Be Disabled    id=${exchange_period_locator}
 
 Verifies Average Ex. Rate is
-    [Arguments]    ${average_ex_rate}
-    Wait Until Element Contains    id=item-information-average-ex-rate-input-1    ${average_ex_rate}
+    [Arguments]    ${average_ex_rate_locator}    ${average_ex_rate}
+    Wait Until Element Contains    id=${average_ex_rate_locator}    ${average_ex_rate}
 
 Verifies Price is
     [Arguments]    ${item_price_locator}    ${item_price}
@@ -272,6 +271,53 @@ Verifies Price is
 Verifies Amount is
     [Arguments]    ${item_amount_locator}     ${item_amount}    
     Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=${item_amount_locator}    value    ${item_amount}
+
+Verify 9 Items
+    @{csv_data}=    Read CSV File To List Of Dictionaries    ${CSV_FILE_PATH}
+    
+    FOR    ${item_data}    IN    @{csv_data}
+        Add And Verify Invoice Items    ${item_data}
+    END
+
+Add And Verify Invoice Items
+    [Arguments]    ${item_data}
+    Click Add Item
+    Select Item Name    ${item_data}[item_name_locator]    ${item_data}[item_name]
+    Input item description    ${item_data}[item_description_locator]    ${item_data}[item_description]
+    Input Qty    ${item_data}[item_qty_locator]    ${item_data}[item_qty]
+    Input Price(THB)    ${item_data}[item_price_thb_locator]    ${item_data}[item_price_thb]
+    Verifies Amount(THB) is    ${item_data}[item_amount_thb_locator]    ${item_data}[item_amount_thb]
+    Verifies Exchange Period is disable    ${item_data}[exchange_period_locator]
+    Verifies Average Ex. Rate is    ${item_data}[average_ex_rate_locator]    ${item_data}[average_ex_rate]
+    Verifies Price is    ${item_data}[item_price_locator]    ${item_data}[item_price]
+    Verifies Amount is    ${item_data}[item_amount_locator]     ${item_data}[item_amount]    
+
+Read CSV File To List Of Dictionaries
+    [Arguments]    ${file_path}
+    [Documentation]    Read CSV file and return as list of dictionaries
+    
+    ${csv_content}=    Get File    ${file_path}
+    @{lines}=    Split To Lines    ${csv_content}
+    ${header_line}=    Get From List    ${lines}    0
+    @{headers}=    Split String    ${header_line}    ,
+    
+    @{data_list}=    Create List
+    
+    FOR    ${i}    IN RANGE    1    ${lines.__len__()}
+        ${line}=    Get From List    ${lines}    ${i}
+        @{values}=    Split String    ${line}    ,
+        &{row_dict}=    Create Dictionary
+        
+        FOR    ${j}    IN RANGE    ${headers.__len__()}
+            ${header}=    Get From List    ${headers}    ${j}
+            ${value}=    Get From List    ${values}    ${j}
+            Set To Dictionary    ${row_dict}    ${header}    ${value}
+        END
+        
+        Append To List    ${data_list}    ${row_dict}
+    END
+    
+    RETURN    @{data_list}
 
 # Verifies Base Amount is
 
@@ -285,7 +331,7 @@ Verifies Amount is
 # Verifies Withholding Tax is 3 and Invoice is
 # Verifies Net Amount is
 # Save
-Click Save
+# Click Save
 # Work List Screen
 Select menu Work List Screen
     Wait Until Element Is Visible    id=side-bar-transaction
@@ -297,21 +343,41 @@ Select menu Work List Screen
 Verifies PIC is
     [Arguments]    ${pic_name}
     Wait Until Keyword Succeeds    5x    200ms    
-    ...    Element Text Should Be    id=pic-dropdown    value     ${pic_name}
+    ...    Element Attribute Value Should Be    id=pic-dropdown    value     ${pic_name}
 
 Verifies Create By is
     [Arguments]    ${create_by_name}
     Wait Until Keyword Succeeds    5x    200ms    
-    ...    Element Text Should Be    id=create-by-dropdown    value     ${create_by_name}
+    ...    Element Attribute Value Should Be    id=create-by-dropdown    value     ${create_by_name}
     
 
-Verifies Job No. is    M-ITM2600001
+Verifies table Job No. is
+    [Arguments]    ${job_no}
+    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=job-no-label-1    ${job_no}
+
+Verifies table REV is
+    [Arguments]    ${rev_no}
+    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=rev-label-1   ${rev_no}
+
+Verifies table Create By is
+    [Arguments]    ${create_by_name}
+    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=create-by-label-1   ${create_by_name}
+  
+Verifies table Create Date is    
     
-Verifies REV is    00
-Verifies Create By is    MISS Natnicha Rerngrit
-Verifies Create Date is    
-Verifies Transaction Type is     DI-IS Maintenance
-Verifies Invoice Amount is    5,234,868.20
-Verifies Document Status is    Waiting for Submit
+    
+    
+Verifies table Transaction Type is
+    [Arguments]    ${transaction_type}
+    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=transaction-type-label-1   ${transaction_type}
+
+Verifies table Invoice Amount is  
+    [Arguments]    ${invoice_amount}
+    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=invoice-amount-label-1   ${invoice_amount}
+
+Verifies table Document Status is
+    [Arguments]    ${doc_status}
+    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=document-status-label-1   ${doc_status}
+
 
 
