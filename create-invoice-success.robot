@@ -10,8 +10,14 @@ Library    DateTime
 ${URL}    sim-dev.toyota-asia.com
 ${BROWSER}    edge
 ${REMOTE_URL}   http://selenium-webdriver-edge:4444/wd/hub
-${CSV_FILE_PATH}    ${EXECDIR}/invoice_items.csv
+${RETRY}    5x
+${INTERVAL}    250ms
+${ADD_9_ITEMS_FILE_PATH}    ${EXECDIR}/invoice_items.csv
+${ADD_ITEMS_NO_9_FILE_PATH}    ${EXECDIR}/invoice_add_item_no_9.csv
+${ADD_ITEMS_NO_10_FILE_PATH}    ${EXECDIR}/invoice_add_item_no_10.csv
+${8_ITEMS_REMAINING_FILE_PATH}    ${EXECDIR}/invoice_item_remaining.csv
 ${GLOBAL_EXPECTED_DATE}
+
     
 ...    
 *** Test Cases ***
@@ -37,13 +43,12 @@ Entry Invoice the first invoice, 10 items
     Verifies Customer's Tax ID is    0115531001656
     Verifies Customer's address is    187 M.9 OLD RAILWAY RD., T.THEPHARAK, A.MUEANG, SAMUTPRAKAN Thailand 10270
     Veriies Remittance Due Date is    20th/Next MTH
-    # Select Attn
-    # Verifies Attn name is
-    # Verifies Attn's e-mail is
-    # Verifies Attn's Department is
-    # Verifies CC name is
-    # Verifies CC's e-mail is
-    # Verifies CC's Department is
+    Select Attn    Paiboon Sripituckpong
+    Verifies Attn name is    Paiboon Sripituckpong
+    Verifies Attn's e-mail is    psripitu@taw.co.th
+    Verifies Attn's Department is    Plant Administration
+    Verifies CC name is    Sarawoot Intharadet
+    Verifies CC's e-mail is    sinthara@taw.co.th
 # # Section Document Type
 #     Verifies total Business Category count is
 #     Select Business Category
@@ -61,29 +66,40 @@ Entry Invoice the first invoice, 10 items
 #     Verifies Bank Information is
 #     Verifies total Currency count is
 #     Select Currency is
-# # Section Item Information
+# # Section Item Information add 10 items
     Select Item Type By Detail
-    Verifies Item Name is    DI-IS Maintenance
-    Input item description    item-information-item-description-input-0    Outsource for PC Support and IT Operation Support +Network
-    Input Qty    item-information-qty-input-0    1
-    Input Price(THB)    item-information-price-thb-input-0    351895.24
-    Verifies Amount(THB) is    item-information-amount-thb-input-0    351895.24
-    Verifies Exchange Period is disable    item-information-exchange-period-dropdown-0
-    Verifies Average Ex. Rate is    item-information-average-ex-rate-input-0    1.000000
-    Verifies Price is    item-information-price-input-0    351895.24
-    Verifies Amount is    item-information-amount-input-0    351895.24
-    Click Add Item
-    Verify 9 Items
-    # Verifies Base Amount is
+    Verifies Item Table is    No data available
+    Add 1st item
+    Add and Verifies Invoice Items    ${ADD_9_ITEMS_FILE_PATH}
+
 # # Section Withholding Tax Information
-    # Select Show detail on document is Yes
-    # Verifies WHT Rate is enable
-    # Input WHT Rate is 3
-    # Verifies Total Amount is
-    # Verifies Value Added Tax is 7 and Invoice is
-    # Verifies Grand Total Amount is
-    # Verifies Withholding Tax is 3 and Invoice is
-    # Verifies Net Amount is
+    Select Show detail on document is Yes
+    Verifies Base Amount and WHT Rate is enable
+    Input WHT Rate is 3
+    Verifies Withholding Tax is 3 and Invoice is    146,772.01
+    Verifies Net Amount is    5,088,096.19
+
+# # Section Item Information delete and add 2items
+    Select Checkbox item    item-information-selected-item-checkbox-2
+    Select Checkbox item    item-information-selected-item-checkbox-5
+    Click Delete
+    # Verifies Delete modal text is
+    # Click confirm Delete
+    # Verifies Toast Delete success message is
+    # Verifies Toase Delete success is disappear in 5 sec
+    Verifies Invoice 8 Items    ${8_ITEMS_REMAINING_FILE_PATH}
+    Verifies Items order is 1-8
+    Verifies Base Amount is    3,574,165.41
+    Verifies Total Amount is    3,574,165.41
+    Verifies Value Added Tax (Vat) is    250,191.58
+    Verifies Grand Total Amount is    3,824,356.99
+    Add and Verifies Invoice Items    ${ADD_ITEMS_NO_9_FILE_PATH}
+    Verifies Withholding Tax is 3 and Invoice is    126,124.14
+    Verifies Net Amount is    4,372,303.59
+    Add and Verifies Invoice Items    ${ADD_ITEMS_NO_10_FILE_PATH}
+    Verifies Withholding Tax is 3 and Invoice is    146,772.01
+    Verifies Net Amount is    5,088,096.19
+
 # # Save
 #     Click Save
 # # Work List Screen
@@ -200,13 +216,34 @@ Veriies Remittance Due Date is
     Wait Until Keyword Succeeds    5x    200ms    
     ...    Element Attribute Value Should Be    id=document-information-remittance-due-date-input    value    ${remittance_due_date}
     
-# Select Attn
-# Verifies Attn name is
-# Verifies Attn's e-mail is
-# Verifies Attn's Department is
-# Verifies CC name is
-# Verifies CC's e-mail is
-# Verifies CC's Department is
+Select Attn
+    [Arguments]    ${attn_name}
+    Wait Until Keyword Succeeds    5x    200ms    Select From List By Label    id=customer-information-attn-dropdown     ${attn_name}
+    
+Verifies Attn name is
+    [Arguments]    ${attn_name}
+    Wait Until Keyword Succeeds    5x    200ms    
+    ...    Element Attribute Value Should Be    id=customer-information-attn-dropdown    value    ${attn_name}
+    
+Verifies Attn's e-mail is
+    [Arguments]    ${attn_email}
+    Wait Until Keyword Succeeds    5x    200ms    
+    ...    Element Attribute Value Should Be    id=customer-information-attn-email-input    value    ${attn_email}
+
+Verifies Attn's Department is
+    [Arguments]    ${attn_department}
+    Wait Until Keyword Succeeds    5x    200ms    
+    ...    Element Attribute Value Should Be    id=customer-information-attn-department-input    value    ${attn_department}
+
+Verifies CC name is
+    [Arguments]    ${cc_name}
+    Wait Until Keyword Succeeds    ${RETRY}    ${INTERVAL}    
+    ...    Element Attribute Value Should Be    id=customer-information-cc-input    value    ${cc_name}
+
+Verifies CC's e-mail is
+    [Arguments]    ${cc_email}
+    Wait Until Keyword Succeeds    ${RETRY}    ${INTERVAL}    
+    ...    Element Attribute Value Should Be    id=customer-information-cc-email-input    value    ${cc_email}
 
 # # Section Document Type
 # Verifies total Business Category count is
@@ -231,6 +268,14 @@ Veriies Remittance Due Date is
 Select Item Type By Detail
     Wait Until Keyword Succeeds    5x    200ms    Select Radio Button    group_name=item-information-select-item-type    value=item-information-by-summary-radio
 
+Verifies Item Table is
+    [Arguments]    ${no_data_content}
+    Wait Until Keyword Succeeds    5x    200ms    Element Should Contain    item-information-table-no-data    ${no_data_content}
+
+Verifies Item Name is
+    [Arguments]    ${item_name_locator}    ${item_name}
+    Wait Until Keyword Succeeds    5x    200ms    Element Attribute Value Should Be    id=${item_name_locator}    value     ${item_name}
+
 Click Add Item
     Click Button    id=item-information-add-btn
 
@@ -239,17 +284,21 @@ Select Item Name
     Wait Until Keyword Succeeds    5x    200ms    
     ...    Select From List By Label    id=${item_name_locator}    ${item_name}
 
-Verifies Item Name is
-    [Arguments]    ${1st_item_name}
-    Wait Until Keyword Succeeds    5x    200ms    Element Attribute Value Should Be    id=item-information-item-name-dropdown-0    value     ${1st_item_name}
-
 Input item description
     [Arguments]    ${item_description_locator}    ${item_description}
     Input Text    id=${item_description_locator}   ${item_description}
 
+Verifies item description is
+    [Arguments]    ${item_desc_locator}    ${item_desc}
+    Wait Until Keyword Succeeds    5x    200ms    Element Attribute Value Should Be    id=${item_desc_locator}    value     ${item_desc}
+
 Input Qty
     [Arguments]    ${item_qty_locator}    ${item_qty}
     Input Text    id=${item_qty_locator}    ${item_qty}
+
+Verifies item Qty
+    [Arguments]    ${item_qty_locator}    ${item_qty}
+    Wait Until Keyword Succeeds    5x    200ms    Element Attribute Value Should Be    id=${item_qty_locator}    value     ${item_qty}
 
 Input Price(THB)
     [Arguments]    ${item_price_thb_locator}    ${item_price_thb}
@@ -275,14 +324,47 @@ Verifies Amount is
     [Arguments]    ${item_amount_locator}     ${item_amount}    
     Wait Until Keyword Succeeds    5x    200ms    Element Attribute Value Should Be    id=${item_amount_locator}    value    ${item_amount}
 
-Verify 9 Items
-    @{csv_data}=    Read CSV File To List Of Dictionaries    ${CSV_FILE_PATH}
+Verifies Base Amount is
+    [Arguments]    ${base_amount}    
+    Wait Until Keyword Succeeds    5x    200ms    Element Attribute Value Should Be    id=withholding-tax-information-base-amount-input    value    ${base_amount}
+
+Verifies Total Amount is
+    [Arguments]    ${total_amount}    
+    Wait Until Keyword Succeeds    5x    200ms    Element Attribute Value Should Be    id=document-summary-total-amount-invoice-input    value    ${total_amount}
+
+Verifies Value Added Tax (Vat) is
+    [Arguments]    ${vat}    
+    Wait Until Keyword Succeeds    5x    200ms    Element Attribute Value Should Be    id=document-summary-vat-invoice-input    value    ${vat}
+
+Verifies Grand Total Amount is
+    [Arguments]    ${grand_total_amount}    
+    Wait Until Keyword Succeeds    5x    200ms    Element Attribute Value Should Be    id=document-summary-grand-total-amount-invoice-input     value    ${grand_total_amount}
+
+Add 1st item
+    Click Add Item
+    Verifies Item Name is    item-information-item-name-dropdown-0    DI-IS Maintenance
+    Input item description    item-information-item-description-input-0    Outsource for PC Support and IT Operation Support +Network
+    Input Qty    item-information-qty-input-0    1
+    Input Price(THB)    item-information-price-thb-input-0    351895.24
+    Verifies Amount(THB) is    item-information-amount-thb-input-0    351895.24
+    Verifies Exchange Period is disable    item-information-exchange-period-dropdown-0
+    Verifies Average Ex. Rate is    item-information-average-ex-rate-input-0    1.000000
+    Verifies Price is    item-information-price-input-0    351895.24
+    Verifies Amount is    item-information-amount-input-0    351895.24
+    Verifies Base Amount is    351895.24    
+    Verifies Total Amount is    351895.24
+    Verifies Value Added Tax (Vat) is    24632.67        
+    Verifies Grand Total Amount is    376527.91
+
+Add and Verifies Invoice Items
+    [Arguments]    ${file_path}
+    @{csv_data}=    Read CSV File To List Of Dictionaries    ${file_path}
     
     FOR    ${item_data}    IN    @{csv_data}
-        Add And Verify Invoice Items    ${item_data}
+        Add Invoice Items    ${item_data}
     END
 
-Add And Verify Invoice Items
+Add Invoice Items
     [Arguments]    ${item_data}
     Click Add Item
     Select Item Name    ${item_data}[item_name_locator]    ${item_data}[item_name]
@@ -293,11 +375,14 @@ Add And Verify Invoice Items
     Verifies Exchange Period is disable    ${item_data}[exchange_period_locator]
     Verifies Average Ex. Rate is    ${item_data}[average_ex_rate_locator]    ${item_data}[average_ex_rate]
     Verifies Price is    ${item_data}[item_price_locator]    ${item_data}[item_price]
-    Verifies Amount is    ${item_data}[item_amount_locator]     ${item_data}[item_amount]    
+    Verifies Amount is    ${item_data}[item_amount_locator]     ${item_data}[item_amount]   
+    Verifies Base Amount is    ${item_data}[base_amount]
+    Verifies Total Amount is    ${item_data}[total_amount]
+    Verifies Value Added Tax (Vat) is    ${item_data}[vat]
+    Verifies Grand Total Amount is    ${item_data}[grand_total_amount]
 
 Read CSV File To List Of Dictionaries
     [Arguments]    ${file_path}
-    [Documentation]    Read CSV file and return as list of dictionaries
     
     ${csv_content}=    Get File    ${file_path}
     @{lines}=    Split To Lines    ${csv_content}
@@ -322,19 +407,78 @@ Read CSV File To List Of Dictionaries
     
     RETURN    @{data_list}
 
-# Verifies Base Amount is
-
 # Section Withholding Tax Information
-# Select Show detail on document is Yes
-# Verifies WHT Rate is enable
-# Input WHT Rate is 3
-# Verifies Total Amount is
-# Verifies Value Added Tax is 7 and Invoice is
-# Verifies Grand Total Amount is
-# Verifies Withholding Tax is 3 and Invoice is
-# Verifies Net Amount is
+Select Show detail on document is Yes
+    Click Element    id=withholding-tax-information-yes-radio
+
+Verifies Base Amount and WHT Rate is enable
+    Wait Until Keyword Succeeds    ${RETRY}    ${INTERVAL}    Element Should Be Enabled    id=withholding-tax-information-base-amount-input
+    Wait Until Keyword Succeeds    ${RETRY}    ${INTERVAL}    Element Should Be Enabled    id=withholding-tax-information-wth-rate-input
+    
+Input WHT Rate is 3
+    Input Text    id=withholding-tax-information-wth-rate-input    3
+
+Verifies Withholding Tax is 3 and Invoice is
+    [Arguments]    ${wth_tax_invoice}
+    Element Text Should Be    id=document-summary-withholding-tax-label    3.00%    
+    Wait Until Keyword Succeeds    5x    200ms    Element Attribute Value Should Be    id=document-summary-withholding-tax-invoice-input     value    ${wth_tax_invoice}
+    
+Verifies Net Amount is
+    [Arguments]    ${net_amount}
+    Wait Until Keyword Succeeds    5x    200ms    Element Attribute Value Should Be    id=document-summary-net-amount-invoice-input     value    ${net_amount}
+
+# # Section Item Information delete and add 2items
+Select Checkbox item
+    [Arguments]    ${checkbox_locator}
+    Select Checkbox    id=${checkbox_locator}
+
+Click Delete
+    Click Button    item-information-delete-btn
+
+# Verifies Delete modal text is
+# Click confirm Delete
+# Verifies Toast Delete success message is
+# Verifies Toase Delete success is disappear in 5 sec
+
+Verifies Invoice 8 Items
+    [Arguments]    ${file_path}
+    @{csv_data}=    Read CSV File To List Of Dictionaries    ${file_path}
+    
+    FOR    ${item_data}    IN    @{csv_data}
+        Verifies Item remaining    ${item_data}
+    END
+
+Verifies Item remaining 
+    [Arguments]    ${item_data}
+    Verifies Item Name is    ${item_data}[item_name_locator]    ${item_data}[item_name]    
+    Verifies item description is    ${item_data}[item_desc_locator]    ${item_data}[item_desc]
+    Verifies item Qty    ${item_data}[item_qty_locator]    ${item_data}[item_qty]
+    Verifies Amount(THB) is    ${item_data}[item_amount_thb_locator]    ${item_data}[item_amount_thb]
+    Verifies Exchange Period is disable    ${item_data}[exchange_period_locator]
+    Verifies Average Ex. Rate is    ${item_data}[average_ex_rate_locator]    ${item_data}[average_ex_rate]
+    Verifies Price is    ${item_data}[item_price_locator]    ${item_data}[item_price]
+    Verifies Amount is    ${item_data}[item_amount_locator]     ${item_data}[item_amount]   
+
+Verifies Items order is 1-8
+    FOR    ${index}    IN RANGE    0    8
+
+        ${expected_number} =    Evaluate    ${index} + 1
+        
+        ${dynamic_id} =    Set Variable    id=item-information-table-number-text-${index}
+        
+        ${actual_text} =    Get Text    ${dynamic_id}
+        
+        Should Be Equal As Numbers    ${actual_text}    ${expected_number}
+        
+        Log To Console    Verified item number ${expected_number} at locator ${dynamic_id}
+    END
+
+
 # Save
-# Click Save
+
+Click Save
+    Click Button    id=save-invoice-entry-btn
+
 # Work List Screen
 Select menu Work List Screen
     Wait Until Element Is Visible    id=side-bar-transaction
@@ -352,19 +496,18 @@ Verifies Create By is
     [Arguments]    ${create_by_name}
     Wait Until Keyword Succeeds    5x    200ms    
     ...    Element Attribute Value Should Be    id=create-by-dropdown    value     ${create_by_name}
-    
 
 Verifies table Job No. is
     [Arguments]    ${job_no}
-    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=job-no-label-1    ${job_no}
+    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=job-no-label-0    ${job_no}
 
 Verifies table REV is
     [Arguments]    ${rev_no}
-    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=rev-label-1   ${rev_no}
+    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=rev-label-0   ${rev_no}
 
 Verifies table Create By is
     [Arguments]    ${create_by_name}
-    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=create-by-label-1   ${create_by_name}
+    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=create-by-label-0   ${create_by_name}
   
 Verifies table Create Date is Current Date
     Store Expected Date Globally
@@ -375,20 +518,20 @@ Store Expected Date Globally
     Set Global Variable    ${GLOBAL_EXPECTED_DATE}    ${expected_date}
 
 Use Stored Global Date
-    ${actual_creation_date}=    Get Text    create-date-label-1
+    ${actual_creation_date}=    Get Text    create-date-label-0
     Should Be Equal    ${actual_creation_date}    ${GLOBAL_EXPECTED_DATE}
     
 Verifies table Transaction Type is
     [Arguments]    ${transaction_type}
-    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=transaction-type-label-1   ${transaction_type}
+    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=transaction-type-label-0   ${transaction_type}
 
 Verifies table Invoice Amount is  
     [Arguments]    ${invoice_amount}
-    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=invoice-amount-label-1   ${invoice_amount}
+    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=invoice-amount-label-0   ${invoice_amount}
 
 Verifies table Document Status is
     [Arguments]    ${doc_status}
-    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=document-status-label-1   ${doc_status}
+    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=document-status-label-0   ${doc_status}
 
 
 
