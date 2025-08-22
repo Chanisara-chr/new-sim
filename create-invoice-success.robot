@@ -37,6 +37,7 @@ Entry Invoice the first invoice, 10 items
 # # Section Customer's Information
     Verifies total Customer Name count is    1
     Select Customer Name    TOYOTA AUTO WORKS CO.,LTD.
+    Verifies Customer Name is    TOYOTA AUTO WORKS CO.,LTD.
     Verifies total customer's branches count is    1
     Search Customer's Branch    Head Office
     Verifies Customer's branch is    Head Office
@@ -101,8 +102,9 @@ Entry Invoice the first invoice, 10 items
     Verifies Net Amount is    5,088,096.19
 
 # # Save
-#     Click Save
+    Click Save
 # # Work List Screen
+    Close Browser
     Entry Website
     Select menu Work List Screen
     Verifies PIC is    MISS Natnicha Rerngrit
@@ -114,6 +116,30 @@ Entry Invoice the first invoice, 10 items
     Verifies table Transaction Type is     DI-IS Maintenance
     Verifies table Invoice Amount is    5,234,868.20
     Verifies table Document Status is    Waiting for Submit
+    # Click Job NO.
+
+# # Verify data on invoice entry page after dave
+    Verifies Company Name is    TOYOTA MOTOR ASIA (THAILAND) CO., LTD.
+    Verifies Company's Tax ID is    115546006888
+    Verifies T/D is    Toyota
+    Verifies User Name is    MISS Natnicha Rerngrit
+    Verify Department is    Asia DX & IT Management
+    Verifies total company's branches count is    1
+    Verifies Company's branch is    00000 - Head office
+    Verifies Company's address is    99 Moo 5, Ban Rakat, Bang Bo, Samut Prakan 10560 Thailand 
+    Verifies total Customer Name count is    1
+    Verifies Customer Name is    TOYOTA AUTO WORKS CO.,LTD.
+    Verifies total customer's branches count is    1
+    Verifies Customer's branch is    Head Office
+    Verifies Customer's Tax ID is    0115531001656
+    Verifies Customer's address is    187 M.9 OLD RAILWAY RD., T.THEPHARAK, A.MUEANG, SAMUTPRAKAN Thailand 10270
+    Veriies Remittance Due Date is    20th/Next MTH
+    Verifies Attn name is    Paiboon Sripituckpong
+    Verifies Attn's e-mail is    psripitu@taw.co.th
+    Verifies Attn's Department is    Plant Administration
+    Verifies CC name is    Sarawoot Intharadet
+    Verifies CC's e-mail is    sinthara@taw.co.th
+
 
 
 *** Keywords ***
@@ -183,8 +209,12 @@ Verifies total Customer Name count is
     Length Should Be    ${customer_name_length}    length=${customer_name_list_length}
 
 Select Customer Name
-    [Arguments]    ${branch_name}
-    Wait Until Keyword Succeeds    5x    200ms    Select From List By Label    id=customer-information-customer-name-dropdown     ${branch_name}
+    [Arguments]    ${customer_name}
+    Wait Until Keyword Succeeds    5x    200ms    Select From List By Label    id=customer-information-customer-name-dropdown     ${customer_name}
+
+Verifies Customer Name is
+    [Arguments]    ${customer_name}
+    Wait Until Keyword Succeeds    5x    200ms    Element Attribute Value Should Be    id=customer-information-customer-name-dropdown    value     ${customer_name}
 
 Verifies total customer's branches count is
     [Arguments]    ${customer_branches_list_length}
