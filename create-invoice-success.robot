@@ -313,7 +313,7 @@ Verifies Item Table is
 
 Verifies Item Name is
     [Arguments]    ${item_name_locator}    ${item_name}
-    Wait Until Keyword Succeeds    5x    200ms    Element Attribute Value Should Be    id=${item_name_locator}    value     ${item_name}
+    Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=${item_name_locator}    ${item_name}
 
 Click Add Item
     Click Button    id=item-information-add-btn
