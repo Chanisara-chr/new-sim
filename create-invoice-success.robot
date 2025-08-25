@@ -16,6 +16,7 @@ ${ADD_9_ITEMS_FILE_PATH}    ${EXECDIR}/invoice_items.csv
 ${ADD_ITEMS_NO_9_FILE_PATH}    ${EXECDIR}/invoice_add_item_no_9.csv
 ${ADD_ITEMS_NO_10_FILE_PATH}    ${EXECDIR}/invoice_add_item_no_10.csv
 ${8_ITEMS_REMAINING_FILE_PATH}    ${EXECDIR}/invoice_item_remaining.csv
+${10_ITEMS_FILE_PATH}    ${EXECDIR}/new_invoice_10_items.csv
 ${GLOBAL_EXPECTED_DATE}
 
     
@@ -89,7 +90,7 @@ Entry Invoice the first invoice, 10 items
     # Verifies Toast Delete success message is
     # Verifies Toase Delete success is disappear in 5 sec
     Verifies Invoice 8 Items    ${8_ITEMS_REMAINING_FILE_PATH}
-    Verifies Items order is 1-8
+    Verifies Items order is 1 -    8
     Verifies Base Amount is    3,574,165.41
     Verifies Total Amount is    3,574,165.41
     Verifies Value Added Tax (Vat) is    250,191.58
@@ -116,7 +117,7 @@ Entry Invoice the first invoice, 10 items
     Verifies table Transaction Type is     DI-IS Maintenance
     Verifies table Invoice Amount is    5,234,868.20
     Verifies table Document Status is    Waiting for Submit
-    # Click Job NO.
+    Click Job NO.    M-ITM2600001
 
 # # Verify data on invoice entry page after dave
     Verifies Company Name is    TOYOTA MOTOR ASIA (THAILAND) CO., LTD.
@@ -139,6 +140,14 @@ Entry Invoice the first invoice, 10 items
     Verifies Attn's Department is    Plant Administration
     Verifies CC name is    Sarawoot Intharadet
     Verifies CC's e-mail is    sinthara@taw.co.th
+    Verifies Invoice 10 Items    ${10_ITEMS_FILE_PATH}
+    Verifies Items order is 1 -    10
+    Verifies Base Amount is    4,892,400.19
+    Verifies Total Amount is    4,892,400.19
+    Verifies Value Added Tax (Vat) is    342,468.01
+    Verifies Grand Total Amount is    5,234,868.20
+    Verifies Withholding Tax is 3 and Invoice is    146,772.01
+    Verifies Net Amount is    5,088,096.19
 
 
 
@@ -489,19 +498,21 @@ Verifies Item remaining
     Verifies Price is    ${item_data}[item_price_locator]    ${item_data}[item_price]
     Verifies Amount is    ${item_data}[item_amount_locator]     ${item_data}[item_amount]   
 
-Verifies Items order is 1-8
-    FOR    ${index}    IN RANGE    0    8
+Verifies Items order is 1 -
+    [Arguments]    ${number}
+    FOR    ${index}    IN RANGE    0    ${number}
 
         ${expected_number} =    Evaluate    ${index} + 1
+        ${table_number_id} =    Set Variable    id=item-information-table-number-text-${index}
+
+        Wait Until Element Is Visible    ${table_number_id}    timeout=5s
         
-        ${dynamic_id} =    Set Variable    id=item-information-table-number-text-${index}
-        
-        ${actual_text} =    Get Text    ${dynamic_id}
-        
+        ${actual_text} =    Get Text    ${table_number_id}
         Should Be Equal As Numbers    ${actual_text}    ${expected_number}
         
-        Log To Console    Verified item number ${expected_number} at locator ${dynamic_id}
+        Log To Console    Row ${expected_number}: element 'item-information-table-number-text-${index}' shows '${actual_text}'
     END
+
 
 
 # Save
@@ -563,5 +574,14 @@ Verifies table Document Status is
     [Arguments]    ${doc_status}
     Wait Until Keyword Succeeds    5x    200ms    Element Text Should Be    id=document-status-label-0   ${doc_status}
 
+Click Job NO.
+    [Arguments]    ${job_no}
+    Click Button    ${job_no}
 
-
+Verifies Invoice 10 Items
+    [Arguments]    ${file_path}
+    @{csv_data}=    Read CSV File To List Of Dictionaries    ${file_path}
+    
+    FOR    ${item_data}    IN    @{csv_data}
+        Verifies Item remaining    ${item_data}
+    END
