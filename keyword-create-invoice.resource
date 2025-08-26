@@ -203,7 +203,9 @@ Verifies item description is
 
 Input Qty
     [Arguments]    ${item_qty_locator}    ${item_qty}
-    Input Text    id=${item_qty_locator}    ${item_qty}    
+    Set Selenium Speed    1s
+    Input Text    id=${item_qty_locator}    ${item_qty}   
+
 
 Verifies item Qty
     [Arguments]    ${item_qty_locator}    ${item_qty}
@@ -211,6 +213,7 @@ Verifies item Qty
 
 Input Price(THB)
     [Arguments]    ${item_price_thb_locator}    ${item_price_thb}
+    Set Selenium Speed    1s
     Input Text    id=${item_price_thb_locator}    ${item_price_thb} 
 
 Verifies Amount(THB) is
@@ -252,18 +255,18 @@ Verifies Grand Total Amount is
 Add 1st item
     Verifies Item Name is    id=item-information-item-name-dropdown-0    DI-IS Maintenance
     Input item description    id=item-information-item-description-input-0    Outsource for PC Support and IT Operation Support +Network
-    Wait Until Keyword Succeeds    5x    200ms    Input Qty    id=item-information-qty-input-0    1
-    Wait Until Keyword Succeeds    5x    200ms    Input Price(THB)    id=item-information-price-thb-input-0    351895.24
+    Wait Until Keyword Succeeds    5x    200ms    Input Qty    item-information-qty-input-0    1
+    Wait Until Keyword Succeeds    5x    200ms    Input Price(THB)    item-information-price-thb-input-0    351895.24
     Press Keys    None    TAB
     Verifies Amount(THB) is    id=item-information-amount-thb-input-0    351895.24
     Verifies Exchange Period is disable    id=item-information-exchange-period-dropdown-0
     Verifies Average Ex. Rate is    id=item-information-average-ex-rate-input-0    1.000000
-    Verifies Price is    id=item-information-price-input-0    351895.24
-    Verifies Amount is    id=item-information-amount-input-0    351895.24
-    Verifies Base Amount is    351895.24    
-    Verifies Total Amount is    351895.24
-    Verifies Value Added Tax (Vat) is    24632.67        
-    Verifies Grand Total Amount is    376527.91
+    Verifies Price is    id=item-information-price-input-0    351,895.24
+    Verifies Amount is    id=item-information-amount-input-0    351,895.24
+    Verifies Base Amount is    351,895.24    
+    Verifies Total Amount is    351,895.24
+    Verifies Value Added Tax (Vat) is    24,632.67        
+    Verifies Grand Total Amount is    376,527.91
 
 Add and Verifies Invoice Items
     [Arguments]    ${file_path}
