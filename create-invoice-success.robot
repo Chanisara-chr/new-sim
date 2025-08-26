@@ -46,7 +46,6 @@ Entry Invoice the first invoice, 10 items
     Verifies Customer's Tax ID is    0115531001656
     Verifies Customer's address is    187 M.9 OLD RAILWAY RD., T.THEPHARAK, A.MUEANG, SAMUTPRAKAN Thailand 10270
     Veriies Remittance Due Date is    20th/Next MTH
-    Select Attn    Paiboon Sripituckpong
     Verifies Attn name is    Paiboon Sripituckpong
     Verifies Attn's e-mail is    psripitu@taw.co.th
     Verifies Attn's Department is    Plant Administration

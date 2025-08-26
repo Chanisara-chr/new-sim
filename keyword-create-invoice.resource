@@ -62,8 +62,8 @@ Verify Department is
 
 Verifies total company's branches count is
     [Arguments]    ${company_branchs_length}
-    ${branch_length}    Get Selected List Labels    id=company-information-branch-dropdown
-    Length Should Be    ${branch_length}    length=${company_branchs_length}
+    ${branch_length}    Get Element Count   id=company-information-branch-dropdown
+    Should Be Equal As Integers    ${branch_length}    ${company_branchs_length}
 
 Search Company's Branch
     [Arguments]    ${branch_name}
@@ -83,21 +83,24 @@ Verifies Company's address is
 # Section Customer's Information
 Verifies total Customer Name count is
     [Arguments]    ${customer_name_list_length}
-    ${customer_name_length}    Get Selected List Labels    id=company-information-branch-dropdown
-    Length Should Be    ${customer_name_length}    length=${customer_name_list_length}
+    ${customer_name_length}    Get Element Count    id=company-information-branch-dropdown
+    Should Be Equal As Integers    ${customer_name_length}    ${customer_name_list_length}
 
 Select Customer Name
     [Arguments]    ${customer_name}
-    Wait Until Keyword Succeeds    5x    200ms    Select From List By Label    id=customer-information-customer-name-dropdown     ${customer_name}
+    Wait Until Element Is Visible    id=customer-information-customer-name-dropdown
+    Click Element    id=customer-information-customer-name-dropdown
+    Wait Until Element Is Visible    id=customer-information-customer-name-option-${customer_name}
+    Click Element    id=customer-information-customer-name-option-${customer_name}
 
 Verifies Customer Name is
     [Arguments]    ${customer_name}
-    Wait Until Keyword Succeeds    5x    200ms    Element Attribute Value Should Be    id=customer-information-customer-name-dropdown    value     ${customer_name}
+    Wait Until Keyword Succeeds    5x    200ms    Element Should Contain    id=customer-information-customer-name-dropdown    ${customer_name}
 
 Verifies total customer's branches count is
     [Arguments]    ${customer_branches_list_length}
-    ${customer_branches_length}    Get Selected List Labels    id=customer-information-customer-name-branch-dropdown
-    Length Should Be    ${customer_branches_length}    length=${customer_branches_list_length}    
+    ${customer_branches_length}    Get Element Count    id=customer-information-customer-name-branch-dropdown
+    Should Be Equal As Integers    ${customer_branches_length}    ${customer_branches_list_length}
 
 Search Customer's Branch
     [Arguments]    ${customer_branch}
@@ -107,7 +110,7 @@ Search Customer's Branch
 
 Verifies Customer's branch is
     [Arguments]    ${branch_name}
-    Wait Until Keyword Succeeds    5x    200ms    Element Attribute Value Should Be    id=customer-information-customer-name-branch-dropdown    value     ${branch_name}
+    Wait Until Keyword Succeeds    5x    200ms    Element Should Contain    id=customer-information-customer-name-branch-dropdown     ${branch_name}
     
 Verifies Customer's Tax ID is
     [Arguments]    ${customer_tax_id}
@@ -123,10 +126,6 @@ Veriies Remittance Due Date is
     [Arguments]    ${remittance_due_date}
     Wait Until Keyword Succeeds    5x    200ms    
     ...    Element Attribute Value Should Be    id=document-information-remittance-due-date-input    value    ${remittance_due_date}
-    
-Select Attn
-    [Arguments]    ${attn_name}
-    Wait Until Keyword Succeeds    5x    200ms    Select From List By Label    id=customer-information-attn-dropdown     ${attn_name}
     
 Verifies Attn name is
     [Arguments]    ${attn_name}
@@ -189,8 +188,9 @@ Click Add Item
 
 Select Item Name
     [Arguments]    ${item_name_locator}    ${item_name}
-    Wait Until Keyword Succeeds    5x    200ms    
-    ...    Select From List By Label    id=${item_name_locator}    ${item_name}
+    Wait Until Element Is Visible    id=${item_name_locator}
+    Wait Until Keyword Succeeds    ${RETRY}    ${INTERVAL}    Click Element    ${item_name}
+    Click Element    ${item_name}
 
 Input item description
     [Arguments]    ${item_description_locator}    ${item_description}
@@ -322,15 +322,15 @@ Select Show detail on document is Yes
 
 Verifies Base Amount and WHT Rate is enable
     Wait Until Keyword Succeeds    ${RETRY}    ${INTERVAL}    Element Should Be Enabled    id=withholding-tax-information-base-amount-input
-    Wait Until Keyword Succeeds    ${RETRY}    ${INTERVAL}    Element Should Be Enabled    id=withholding-tax-information-wth-rate-input
+    Wait Until Keyword Succeeds    ${RETRY}    ${INTERVAL}    Element Should Be Enabled    id=withholding-tax-information-wht-rate-input
     
 Input WHT Rate is 3
-    Input Text    id=withholding-tax-information-wth-rate-input    3
+    Input Text    id=withholding-tax-information-wht-rate-input    3
 
 Verifies Withholding Tax is 3 and Invoice is
-    [Arguments]    ${wth_tax_invoice}
+    [Arguments]    ${wht_tax_invoice}
     Element Text Should Be    id=document-summary-withholding-tax-label    3.00%    
-    Wait Until Keyword Succeeds    5x    200ms    Element Attribute Value Should Be    id=document-summary-withholding-tax-invoice-input     value    ${wth_tax_invoice}
+    Wait Until Keyword Succeeds    5x    200ms    Element Attribute Value Should Be    id=document-summary-withholding-tax-invoice-input     value    ${wht_tax_invoice}
     
 Verifies Net Amount is
     [Arguments]    ${net_amount}
