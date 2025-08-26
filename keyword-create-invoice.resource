@@ -204,9 +204,8 @@ Verifies item description is
 
 Input Qty
     [Arguments]    ${item_qty_locator}    ${item_qty}
-    # Set Selenium Speed    1s
-    # Input Text    id=${item_qty_locator}    ${item_qty} 
-    Clear Element Text      id=${item_qty_locator}
+    Press Keys    id=${item_qty_locator}    CTRL+a
+    Press Keys    id=${item_qty_locator}    DELETE
     Press Keys    id=${item_qty_locator}    ${item_qty}
 
 
