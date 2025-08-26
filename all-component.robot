@@ -16,4 +16,6 @@ Section Dropdown
 
 *** Keywords ***
 Select Main Dropdown
-    Select From List By Label    id=main-dropdown-normal    option-0
+    [Arguments]    ${customer_name_list_length}
+    ${customer_name_length}    Get List Items    id=company-information-branch-dropdown
+    Length Should Be    ${customer_name_length}    length=${customer_name_list_length}
