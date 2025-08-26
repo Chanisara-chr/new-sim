@@ -28,10 +28,10 @@ Entry Website
     ...    Wait Until Page Contains    Selling Invoice Management 
 
 Select menu Invoice Entry Screen
-    Wait Until Element Is Visible    id=side-bar-transaction
-    Click Element    id=side-bar-transaction
-    Wait Until Element Is Visible    id=sub-side-bar-invoice-entry-screen    
-    Click Element    id=sub-side-bar-invoice-entry-screen
+    Wait Until Element Is Visible    id=side-bar-transaction-btn
+    Click Element    id=side-bar-transaction-btn
+    Wait Until Element Is Visible    id=sub-side-bar-invoice-entry-screen-btn    
+    Click Element    id=sub-side-bar-invoice-entry-screen-btn
     Wait Until Page Contains    Job No.
 
 # Section Company Information
