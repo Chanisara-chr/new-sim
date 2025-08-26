@@ -254,7 +254,7 @@ Add 1st item
     Input item description    id=item-information-item-description-input-0    Outsource for PC Support and IT Operation Support +Network
     Input Qty    id=item-information-qty-input-0    1
     Input Price(THB)    id=item-information-price-thb-input-0    351895.24
-    Mouse Out    id=item-information-amount-thb-input-0
+    Press Keys    None    TAB
     Verifies Amount(THB) is    id=item-information-amount-thb-input-0    351895.24
     Verifies Exchange Period is disable    id=item-information-exchange-period-dropdown-0
     Verifies Average Ex. Rate is    id=item-information-average-ex-rate-input-0    1.000000
@@ -280,7 +280,7 @@ Add Invoice Items
     Input item description    ${item_data}[item_description_locator]    ${item_data}[item_description]
     Input Qty    ${item_data}[item_qty_locator]    ${item_data}[item_qty]
     Input Price(THB)    ${item_data}[item_price_thb_locator]    ${item_data}[item_price_thb]
-    Mouse Out    ${item_data}[item_price_thb_locator]
+    Press Keys    None    TAB
     Verifies Amount(THB) is    ${item_data}[item_amount_thb_locator]    ${item_data}[item_amount_thb]
     Verifies Exchange Period is disable    ${item_data}[exchange_period_locator]
     Verifies Average Ex. Rate is    ${item_data}[average_ex_rate_locator]    ${item_data}[average_ex_rate]
