@@ -24,6 +24,7 @@ ${GLOBAL_EXPECTED_DATE}
 
 Entry Website
     Open Browser    ${URL}    ${BROWSER}    remote_url=${REMOTE_URL}
+    Maximize Browser Window
     Wait Until Keyword Succeeds    5x    200ms    
     ...    Wait Until Page Contains    Selling Invoice Management 
 
@@ -275,16 +276,16 @@ Add and Verifies Invoice Items
 Add Invoice Items
     [Arguments]    ${item_data}
     Click Add Item
-    Select Item Name    id=${item_data}[item_name_locator]    ${item_data}[item_name]
-    Input item description    id=${item_data}[item_description_locator]    ${item_data}[item_description]
-    Input Qty    id=${item_data}[item_qty_locator]    ${item_data}[item_qty]
-    Input Price(THB)    id=${item_data}[item_price_thb_locator]    ${item_data}[item_price_thb]
-    Mouse Out    id=${item_data}[item_price_thb_locator]
-    Verifies Amount(THB) is    id=${item_data}[item_amount_thb_locator]    ${item_data}[item_amount_thb]
-    Verifies Exchange Period is disable    id=${item_data}[exchange_period_locator]
-    Verifies Average Ex. Rate is    id=${item_data}[average_ex_rate_locator]    ${item_data}[average_ex_rate]
-    Verifies Price is    id=${item_data}[item_price_locator]    ${item_data}[item_price]
-    Verifies Amount is    id=${item_data}[item_amount_locator]     ${item_data}[item_amount]   
+    Select Item Name    ${item_data}[item_name_locator]    ${item_data}[item_name]
+    Input item description    ${item_data}[item_description_locator]    ${item_data}[item_description]
+    Input Qty    ${item_data}[item_qty_locator]    ${item_data}[item_qty]
+    Input Price(THB)    ${item_data}[item_price_thb_locator]    ${item_data}[item_price_thb]
+    Mouse Out    ${item_data}[item_price_thb_locator]
+    Verifies Amount(THB) is    ${item_data}[item_amount_thb_locator]    ${item_data}[item_amount_thb]
+    Verifies Exchange Period is disable    ${item_data}[exchange_period_locator]
+    Verifies Average Ex. Rate is    ${item_data}[average_ex_rate_locator]    ${item_data}[average_ex_rate]
+    Verifies Price is    ${item_data}[item_price_locator]    ${item_data}[item_price]
+    Verifies Amount is    ${item_data}[item_amount_locator]     ${item_data}[item_amount]   
     Verifies Base Amount is    ${item_data}[base_amount]
     Verifies Total Amount is    ${item_data}[total_amount]
     Verifies Value Added Tax (Vat) is    ${item_data}[vat]
