@@ -249,15 +249,16 @@ Verifies Grand Total Amount is
     Wait Until Keyword Succeeds    5x    200ms    Element Attribute Value Should Be    id=document-summary-grand-total-amount-invoice-input     value    ${grand_total_amount}
 
 Add 1st item
-    Verifies Item Name is    item-information-item-name-dropdown-0    DI-IS Maintenance
-    Input item description    item-information-item-description-input-0    Outsource for PC Support and IT Operation Support +Network
-    Input Qty    item-information-qty-input-0    1
-    Input Price(THB)    item-information-price-thb-input-0    351895.24
-    Verifies Amount(THB) is    item-information-amount-thb-input-0    351895.24
-    Verifies Exchange Period is disable    item-information-exchange-period-dropdown-0
-    Verifies Average Ex. Rate is    item-information-average-ex-rate-input-0    1.000000
-    Verifies Price is    item-information-price-input-0    351895.24
-    Verifies Amount is    item-information-amount-input-0    351895.24
+    Verifies Item Name is    id=item-information-item-name-dropdown-0    DI-IS Maintenance
+    Input item description    id=item-information-item-description-input-0    Outsource for PC Support and IT Operation Support +Network
+    Input Qty    id=item-information-qty-input-0    1
+    Input Price(THB)    id=item-information-price-thb-input-0    351895.24
+    Mouse Out    id=item-information-amount-thb-input-0
+    Verifies Amount(THB) is    id=item-information-amount-thb-input-0    351895.24
+    Verifies Exchange Period is disable    id=item-information-exchange-period-dropdown-0
+    Verifies Average Ex. Rate is    id=item-information-average-ex-rate-input-0    1.000000
+    Verifies Price is    id=item-information-price-input-0    351895.24
+    Verifies Amount is    id=item-information-amount-input-0    351895.24
     Verifies Base Amount is    351895.24    
     Verifies Total Amount is    351895.24
     Verifies Value Added Tax (Vat) is    24632.67        
@@ -274,15 +275,16 @@ Add and Verifies Invoice Items
 Add Invoice Items
     [Arguments]    ${item_data}
     Click Add Item
-    Select Item Name    ${item_data}[item_name_locator]    ${item_data}[item_name]
-    Input item description    ${item_data}[item_description_locator]    ${item_data}[item_description]
-    Input Qty    ${item_data}[item_qty_locator]    ${item_data}[item_qty]
-    Input Price(THB)    ${item_data}[item_price_thb_locator]    ${item_data}[item_price_thb]
-    Verifies Amount(THB) is    ${item_data}[item_amount_thb_locator]    ${item_data}[item_amount_thb]
-    Verifies Exchange Period is disable    ${item_data}[exchange_period_locator]
-    Verifies Average Ex. Rate is    ${item_data}[average_ex_rate_locator]    ${item_data}[average_ex_rate]
-    Verifies Price is    ${item_data}[item_price_locator]    ${item_data}[item_price]
-    Verifies Amount is    ${item_data}[item_amount_locator]     ${item_data}[item_amount]   
+    Select Item Name    id=${item_data}[item_name_locator]    ${item_data}[item_name]
+    Input item description    id=${item_data}[item_description_locator]    ${item_data}[item_description]
+    Input Qty    id=${item_data}[item_qty_locator]    ${item_data}[item_qty]
+    Input Price(THB)    id=${item_data}[item_price_thb_locator]    ${item_data}[item_price_thb]
+    Mouse Out    id=${item_data}[item_price_thb_locator]
+    Verifies Amount(THB) is    id=${item_data}[item_amount_thb_locator]    ${item_data}[item_amount_thb]
+    Verifies Exchange Period is disable    id=${item_data}[exchange_period_locator]
+    Verifies Average Ex. Rate is    id=${item_data}[average_ex_rate_locator]    ${item_data}[average_ex_rate]
+    Verifies Price is    id=${item_data}[item_price_locator]    ${item_data}[item_price]
+    Verifies Amount is    id=${item_data}[item_amount_locator]     ${item_data}[item_amount]   
     Verifies Base Amount is    ${item_data}[base_amount]
     Verifies Total Amount is    ${item_data}[total_amount]
     Verifies Value Added Tax (Vat) is    ${item_data}[vat]
@@ -357,14 +359,14 @@ Verifies Invoice 8 Items
 
 Verifies Item remaining 
     [Arguments]    ${item_data}
-    Verifies Item Name is    ${item_data}[item_name_locator]    ${item_data}[item_name]    
-    Verifies item description is    ${item_data}[item_desc_locator]    ${item_data}[item_desc]
-    Verifies item Qty    ${item_data}[item_qty_locator]    ${item_data}[item_qty]
-    Verifies Amount(THB) is    ${item_data}[item_amount_thb_locator]    ${item_data}[item_amount_thb]
-    Verifies Exchange Period is disable    ${item_data}[exchange_period_locator]
-    Verifies Average Ex. Rate is    ${item_data}[average_ex_rate_locator]    ${item_data}[average_ex_rate]
-    Verifies Price is    ${item_data}[item_price_locator]    ${item_data}[item_price]
-    Verifies Amount is    ${item_data}[item_amount_locator]     ${item_data}[item_amount]   
+    Verifies Item Name is    id=${item_data}[item_name_locator]    ${item_data}[item_name]    
+    Verifies item description is    id=${item_data}[item_desc_locator]    ${item_data}[item_desc]
+    Verifies item Qty    id=${item_data}[item_qty_locator]    ${item_data}[item_qty]
+    Verifies Amount(THB) is    id=${item_data}[item_amount_thb_locator]    ${item_data}[item_amount_thb]
+    Verifies Exchange Period is disable    id=${item_data}[exchange_period_locator]
+    Verifies Average Ex. Rate is    id=${item_data}[average_ex_rate_locator]    ${item_data}[average_ex_rate]
+    Verifies Price is    id=${item_data}[item_price_locator]    ${item_data}[item_price]
+    Verifies Amount is    id=${item_data}[item_amount_locator]     ${item_data}[item_amount]   
 
 Verifies Items order is 1 -
     [Arguments]    ${number}
