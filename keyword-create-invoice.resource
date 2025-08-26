@@ -204,8 +204,9 @@ Verifies item description is
 
 Input Qty
     [Arguments]    ${item_qty_locator}    ${item_qty}
-    Set Selenium Speed    1s
-    # Input Text    id=${item_qty_locator}    ${item_qty}   
+    # Set Selenium Speed    1s
+    # Input Text    id=${item_qty_locator}    ${item_qty} 
+    Clear Element Text      id=${item_qty_locator}
     Press Keys    id=${item_qty_locator}    ${item_qty}
 
 
@@ -217,6 +218,7 @@ Input Price(THB)
     [Arguments]    ${item_price_thb_locator}    ${item_price_thb}
     Set Selenium Speed    1s
     # Input Text    id=${item_price_thb_locator}    ${item_price_thb} 
+    Clear Element Text    id=${item_price_thb_locator}
     Press Keys    id=${item_price_thb_locator}    ${item_price_thb}
 
 Verifies Amount(THB) is
