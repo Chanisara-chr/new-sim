@@ -203,7 +203,7 @@ Verifies item description is
 
 Input Qty
     [Arguments]    ${item_qty_locator}    ${item_qty}
-    Input Text    id=${item_qty_locator}    ${item_qty}
+    Input Text    id=${item_qty_locator}    ${item_qty}    
 
 Verifies item Qty
     [Arguments]    ${item_qty_locator}    ${item_qty}
@@ -252,8 +252,8 @@ Verifies Grand Total Amount is
 Add 1st item
     Verifies Item Name is    id=item-information-item-name-dropdown-0    DI-IS Maintenance
     Input item description    id=item-information-item-description-input-0    Outsource for PC Support and IT Operation Support +Network
-    Input Qty    id=item-information-qty-input-0    1
-    Input Price(THB)    id=item-information-price-thb-input-0    351895.24
+    Wait Until Keyword Succeeds    5x    200ms    Input Qty    id=item-information-qty-input-0    1
+    Wait Until Keyword Succeeds    5x    200ms    Input Price(THB)    id=item-information-price-thb-input-0    351895.24
     Press Keys    None    TAB
     Verifies Amount(THB) is    id=item-information-amount-thb-input-0    351895.24
     Verifies Exchange Period is disable    id=item-information-exchange-period-dropdown-0
@@ -278,8 +278,8 @@ Add Invoice Items
     Click Add Item
     Select Item Name    ${item_data}[item_name_locator]    ${item_data}[item_name]
     Input item description    ${item_data}[item_description_locator]    ${item_data}[item_description]
-    Input Qty    ${item_data}[item_qty_locator]    ${item_data}[item_qty]
-    Input Price(THB)    ${item_data}[item_price_thb_locator]    ${item_data}[item_price_thb]
+    Wait Until Keyword Succeeds    5x    200ms    Input Qty    ${item_data}[item_qty_locator]    ${item_data}[item_qty]
+    Wait Until Keyword Succeeds    5x    200ms    Input Price(THB)    ${item_data}[item_price_thb_locator]    ${item_data}[item_price_thb]
     Press Keys    None    TAB
     Verifies Amount(THB) is    ${item_data}[item_amount_thb_locator]    ${item_data}[item_amount_thb]
     Verifies Exchange Period is disable    ${item_data}[exchange_period_locator]
