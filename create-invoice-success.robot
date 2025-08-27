@@ -105,6 +105,13 @@ Entry Invoice the first invoice, 10 items
 
 # # Save
     Click Save
+    # Verifies Message Code is
+    # Click confirm Save
+    # Verifies Toast Save success message is
+    # Verifies Toase Save success is disappear in 5 sec
+    Verifies Job No. is    M-ITM2600001
+    Verifies Status is    Waiting for Submit
+
 # # Work List Screen
     Close Browser
     Entry Website
@@ -123,7 +130,7 @@ Entry Invoice the first invoice, 10 items
 # # Verify data on invoice entry page after dave
     Verifies Company Name is    TOYOTA MOTOR ASIA (THAILAND) CO., LTD.
     Verifies Company's Tax ID is    115546006888
-    Verifies T/D is    Toyota
+    Select T/D    Toyota
     Verifies User Name is    MISS Natnicha Rerngrit
     Verify Department is    Asia DX & IT Management
     Verifies total company's branches count is    1

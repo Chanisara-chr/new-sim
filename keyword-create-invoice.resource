@@ -424,6 +424,15 @@ Verifies Items order is 1 -
 Click Save
     Click Button    id=save-invoice-entry-btn
 
+Verifies Job No. is
+    [Arguments]    ${job_no}
+    Element Attribute Value Should Be    id=job-no-input    value    ${job_no}
+
+Verifies Status is
+    [Arguments]    ${status}
+    Element Attribute Value Should Be    id=job-no-input    value    ${status}
+
+
 # Work List Screen
 Select menu Work List Screen
     Wait Until Element Is Visible    id=side-bar-transaction
