@@ -35,6 +35,10 @@ Select menu Invoice Entry Screen
     Click Element    id=sub-side-bar-invoice-entry-screen-btn
     Wait Until Page Contains    Job No.
 
+Verifies User is
+    [Arguments]    ${user}
+    Wait Until Element Contains    id=app-bar-user-label    ${user}
+
 # Section Company Information
 
 Verifies Company Name is
@@ -47,9 +51,11 @@ Verifies Company's Tax ID is
     Wait Until Keyword Succeeds    5x    200ms    
     ...    Element Attribute Value Should Be    id=company-information-tax-id-input    value    expected=${company_tax_id}
 
-Verifies T/D is
+Select T/D 
     [Arguments]    ${company_td}
-    Radio Button Should Be Set To    company-information-td-option    value=${company_td}
+    ${T_D}    Create Dictionary    Toyata=company-information-td-radio-toyota    Daihatsu=company-information-td-radio-daihatsu
+    # Radio Button Should Be Set To    company-information-td-option    value=${company_td}
+    Click Element    id=${T_D}[${company_td}]
 
 Verifies User Name is
     [Arguments]    ${user_name}
@@ -158,11 +164,15 @@ Verifies CC's e-mail is
 # Select Business Category
 # Verifies total Transaction Type count is
 # Select Transaction Type
-# Verifies WBS is enable
+Verifies WBS is enable
+    Element Should Be Enabled    document-information-wbs-dropdown
+
 # Verifies total Vat Scheme count is
 # Select Vat Scheme
 # Verifies Document Type is
-# Verifies Vat Rate is
+Verifies Vat Rate is
+    [Arguments]    ${expected_vat_rate}
+    Element Attribute Value Should Be    id=document-type-vat-rate-input    ${expected_vat_rate}
 
 # # Section Document Information
 # Input Ref. No.
@@ -170,7 +180,12 @@ Verifies CC's e-mail is
 # Select WBS
 # Verifies Bank Information is
 # Verifies total Currency count is
-# Select Currency is
+Select Currency is
+    [Arguments]    ${currency}
+    ${CURRENCY_LOCATOR}    Create Dictionary    THB=document-information-currency-dropdown-option-thb    
+    Click Element    id=document-information-currency-dropdown
+    Wait Until Element Is Visible    id=${CURRENCY_LOCATOR}[${currency}]
+    Click Element    id=${CURRENCY_LOCATOR}[${currency}]
 
 # # Section Item Information
 Verifies Item Table is
@@ -215,9 +230,7 @@ Verifies item Qty
 
 Input Price(THB)
     [Arguments]    ${item_price_thb_locator}    ${item_price_thb}
-    Set Selenium Speed    1s
-    # Input Text    id=${item_price_thb_locator}    ${item_price_thb} 
-    Clear Element Text    id=${item_price_thb_locator}
+
     Press Keys    id=${item_price_thb_locator}    ${item_price_thb}
 
 Verifies Amount(THB) is

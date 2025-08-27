@@ -26,10 +26,11 @@ ${GLOBAL_EXPECTED_DATE}
 Entry Invoice the first invoice, 10 items
     Entry Website
     Select menu Invoice Entry Screen
+    Verifies User is    Natnicha
 # Section Company Information
     Verifies Company Name is    TOYOTA MOTOR ASIA (THAILAND) CO., LTD.
     Verifies Company's Tax ID is    115546006888
-    Verifies T/D is    Toyota
+    Select T/D    Toyota
     Verifies User Name is    MISS Natnicha Rerngrit
     Verify Department is    Asia DX & IT Management
     Verifies total company's branches count is    1
