@@ -53,7 +53,7 @@ Verifies Company's Tax ID is
 
 Select T/D 
     [Arguments]    ${company_td}
-    ${T_D}    Create Dictionary    Toyata=company-information-td-radio-toyota    Daihatsu=company-information-td-radio-daihatsu
+    ${T_D}    Create Dictionary    Toyota=company-information-td-radio-toyota    Daihatsu=company-information-td-radio-daihatsu
     # Radio Button Should Be Set To    company-information-td-option    value=${company_td}
     Click Element    id=${T_D}[${company_td}]
 
@@ -95,10 +95,11 @@ Verifies total Customer Name count is
 
 Select Customer Name
     [Arguments]    ${customer_name}
+    ${CUSTOMER_NAME_LOCATOR}    Create Dictionary    TOYOTA MOTOR ASIA (THAILAND) CO., LTD.=customer-information-customer-name-option-0    
     Wait Until Element Is Visible    id=customer-information-customer-name-dropdown
     Click Element    id=customer-information-customer-name-dropdown
-    Wait Until Element Is Visible    id=customer-information-customer-name-option-${customer_name}
-    Click Element    id=customer-information-customer-name-option-${customer_name}
+    Wait Until Element Is Visible    id=${CUSTOMER_NAME_LOCATOR}[${customer_name}]
+    Click Element    id=${CUSTOMER_NAME_LOCATOR}[${customer_name}]
 
 Verifies Customer Name is
     [Arguments]    ${customer_name}
@@ -365,8 +366,20 @@ Select Checkbox item
 Click Delete
     Click Button    item-information-delete-btn
 
-# Verifies Delete modal text is
-# Click confirm Delete
+
+Verifies Message code is
+    [Arguments]    ${message_code}
+    Wait Until Element Is Visible    id=item-information-delete-modal
+    Element Should Contain    id=item-information-delete-modal    ${message_code}
+
+Verifies Delete modal text is
+    [Arguments]    ${delete_text}
+    Wait Until Element Is Visible    id=item-information-delete-modal
+    Element Should Contain    id=item-information-delete-modal    ${delete_text}
+
+Click confirm Delete
+    Click Element    id=item-information-delete-modal-delete-btn
+
 # Verifies Toast Delete success message is
 # Verifies Toase Delete success is disappear in 5 sec
 
